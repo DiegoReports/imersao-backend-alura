@@ -1,5 +1,10 @@
 import express from 'express';
+import conectarAoBanco from './src/config/dbConfig.js';
 
+// Conecta ao banco de dados utilizando a string de conexão fornecida no ambiente
+const conexao = await conectarAoBanco(process.env.STRING_CONEXAO);
+
+// Array de posts (dados fictícios para demonstração)
 const posts = [
   {
     id: 1,
@@ -53,6 +58,7 @@ const posts = [
   }
 ];
 
+// Habilita a interpretação de JSON nas requisições HTTP
 const app = express();
 
 // Indicando funcionalidade de Parse em JSON
@@ -63,13 +69,26 @@ app.listen(3000, () => {
   console.log('Server is running on port 3000 ...');
 });
 
+// Função assíncrona para obter todos os posts do banco de dados
+async function getTodosPosts() {
+  // Seleciona o banco de dados 'imersao-back-end'
+  const db = conexao.db("imersao-back-end");
+  // Seleciona a coleção 'posts' dentro do banco de dados
+  const colecao = db.collection("posts");
+  // funcao para retornar nossa colecao dentro de array
+  return colecao.find().toArray();
+}
+
 // Definindo rota [all posts]
-app.get('/posts', (req, res) => {
-  res.status(200).json(posts)
+app.get('/posts', async (req, res) => {
+  // Chama a função para obter os posts do banco de dados
+  const posts = await getTodosPosts();
+  // Envia os posts como resposta em formato JSON com status 200 (sucesso)
+  res.status(200).json(posts);
 });
 
 // Função Buscar Post por ID
-function buscarPostPorId(id) {
+/* function buscarPostPorId(id) {
   return posts.findIndex((post) => {
     return post.id === Number(id)
   });
@@ -79,4 +98,4 @@ function buscarPostPorId(id) {
 app.get('/posts/:id', (req, res) => {
   const index = buscarPostPorId(req.params.id)
   res.status(200).json(posts[index]);
-});
+}); */
