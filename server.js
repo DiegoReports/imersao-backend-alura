@@ -1,11 +1,8 @@
 import express from 'express';
-import conectarAoBanco from './src/config/dbConfig.js';
-
-// Conecta ao banco de dados utilizando a string de conexão fornecida no ambiente
-const conexao = await conectarAoBanco(process.env.STRING_CONEXAO);
+import routes from './src/routes/postRoutes.js';
 
 // Array de posts (dados fictícios para demonstração)
-const posts = [
+/* const posts = [
   {
     id: 1,
     descricao: 'Uma foto teste',
@@ -56,35 +53,15 @@ const posts = [
     descricao: 'Gato olhando para a câmera',
     imagem: 'https://placecats.com/stare/250/250'
   }
-];
+]; */
 
 // Habilita a interpretação de JSON nas requisições HTTP
 const app = express();
-
-// Indicando funcionalidade de Parse em JSON
-app.use(express.json());
+routes(app);
 
 // Iniciando o servidor [Port 3000]
 app.listen(3000, () => {
   console.log('Server is running on port 3000 ...');
-});
-
-// Função assíncrona para obter todos os posts do banco de dados
-async function getTodosPosts() {
-  // Seleciona o banco de dados 'imersao-back-end'
-  const db = conexao.db("imersao-back-end");
-  // Seleciona a coleção 'posts' dentro do banco de dados
-  const colecao = db.collection("posts");
-  // funcao para retornar nossa colecao dentro de array
-  return colecao.find().toArray();
-}
-
-// Definindo rota [all posts]
-app.get('/posts', async (req, res) => {
-  // Chama a função para obter os posts do banco de dados
-  const posts = await getTodosPosts();
-  // Envia os posts como resposta em formato JSON com status 200 (sucesso)
-  res.status(200).json(posts);
 });
 
 // Função Buscar Post por ID
