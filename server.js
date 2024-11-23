@@ -57,6 +57,8 @@ import routes from './src/routes/postRoutes.js';
 
 // Habilita a interpretação de JSON nas requisições HTTP
 const app = express();
+// Servir arquivos estáticos
+app.use(express.static("uploads"));
 routes(app);
 
 // Iniciando o servidor [Port 3000]
