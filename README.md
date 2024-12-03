@@ -37,14 +37,16 @@ O projeto foi desenvolvido com as seguintes tecnologias:
    ```bash
    git clone https://github.com/DiegoReports/imersao-backend-alura.git
    ```
+
 2. Instale as dependências:
-  ```bash
+   ```bash
     npm install
-  ```
+   ```
+
 3. Inicie o servidor:
-  ```bash
+   ```bash
     npm run dev
-  ```
+   ```
 
 ## 🤝 Contribuições
 Contribuições são sempre bem-vindas! Sinta-se à vontade para abrir uma issue ou enviar um pull request.
